@@ -4,7 +4,7 @@ export interface IProduct {
   image: string;
   title: string;
   category: string;
-  price: string;
+  price: number | null;
 }
 
 export interface IOrder {
@@ -18,29 +18,24 @@ export interface IOrder {
 }
 
 export interface IProductsList {
-  products: IProduct[];
-  preview: string | null;
-  addProducts(product: IProduct): void;
-  deleteProducts(productId: string, payload: Function | null): void;
-  getProducts(productId: string): IProduct;
-  updateProducts(product: IProduct, payload: Function | null): void;
-  checkValidation(data: Record<keyof TShop, string>): boolean;
+  total: number;
+  items: IProduct[];
 }
 
-export interface IUserData {
+export interface IProductsData {
   products: IProduct[];
   preview: string | null;
-  addProducts(product: IProduct): void;
-  deleteProducts(productId: string, payload: Function | null): void;
-  getProducts(productId: string): IProduct;
-  updateProducts(product: IProduct, payload: Function | null): void;
-  checkValidation(data: Record<keyof TShop, string>): boolean;
+  addProduct(product: IProduct): void;
+  deleteProduct(productId: string): void;
+  getProducts(): IProduct[];
+  checkProductsValidation(data: Record<keyof TShop, string>): boolean;
 }
 
+export interface IOrderData {
+  setOrderInfo(orderData: IOrder): void;
+  checkOrderValidation(data: Record<keyof TOrderInfo, string>): boolean;
+}
 
-export type TPaymentInfo = Pick<IOrder, 'payment' | 'address'>;
-
-export type TUserInfo = Pick<IOrder, 'email' | 'phone'>;
+export type TOrderInfo = Pick<IOrder, 'payment' | 'address'| 'email' | 'phone'>;
 
 export type TShop = Pick<IOrder, 'total' | 'items'>;
-//  checkValidation(data: Record<keyof TUserInfo, string>): boolean;
