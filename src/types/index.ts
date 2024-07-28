@@ -5,10 +5,10 @@ export interface IProduct {
   title: string;
   category: string;
   price: number | null;
+  selected: boolean;
 }
 
 export interface IOrder {
-  id: string;
   total: number;
   payment: string;
   address: string;
@@ -18,24 +18,33 @@ export interface IOrder {
 }
 
 export interface IProductsList {
-  total: number;
   items: IProduct[];
 }
 
-export interface IProductsData {
+export interface IAppState {
   products: IProduct[];
-  preview: string | null;
+  basket: IProduct[];
+  order: IOrder;
+  errorForm: TFormErrors;
   addProduct(product: IProduct): void;
   deleteProduct(productId: string): void;
-  getProducts(): IProduct[];
-  checkProductsValidation(data: Record<keyof TShop, string>): boolean;
+  clearBasket(): void;
+  getTotalProducts(): number;
+  getTotalPrice(): number;
+  setIdItems(): void;
+  setOrderInfo(order: keyof IOrderInfo, value: string): void;
+  validateInfo(): boolean;
+  validateOrder(): boolean;
+  clearOrder(): boolean;
+  setProducts(items: IProduct[]): void;
+  resetSelected(): void;
 }
 
-export interface IOrderData {
-  setOrderInfo(orderData: IOrder): void;
-  checkOrderValidation(data: Record<keyof TOrderInfo, string>): boolean;
+export interface IOrderInfo {
+  payment: string;
+  address: string;
+  email: string;
+  phone: string;
 }
 
-export type TOrderInfo = Pick<IOrder, 'payment' | 'address'| 'email' | 'phone'>;
-
-export type TShop = Pick<IOrder, 'total' | 'items'>;
+export type TFormErrors = Partial<Record<keyof IOrderInfo, string>>;
