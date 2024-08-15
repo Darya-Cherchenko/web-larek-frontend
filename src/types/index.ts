@@ -1,12 +1,28 @@
+import { Product } from "../components/AppData";
+
+export interface IProductsList {
+  items: IProduct[];
+}
+
 export interface IProduct {
+  id: string;
+  description?: string;
+  image: string;
+  title: string;
+  category: TCategory;
+  price: number | null;
+  selected: boolean;
+}
+
+export type TProduct = {
   id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: number | null;
-  selected: boolean;
 }
+
 
 export interface IOrder {
   total: number;
@@ -14,19 +30,15 @@ export interface IOrder {
   address: string;
   email: string; 
   phone: string; 
-  items: IProduct[];
-}
-
-export interface IProductsList {
-  items: IProduct[];
+  items: string[];
 }
 
 export interface IAppState {
-  products: IProduct[];
-  basket: IProduct[];
+  products: Product[];
+  basket: Product[];
   order: IOrder;
   errorForm: TFormErrors;
-  addProduct(product: IProduct): void;
+  addProduct(product: Product): void;
   deleteProduct(productId: string): void;
   clearBasket(): void;
   getTotalProducts(): number;
@@ -47,4 +59,16 @@ export interface IOrderInfo {
   phone: string;
 }
 
+export interface IOrderResult{
+  id: string;
+}
+
+export interface IBid {
+  price: number|null;
+}
+
 export type TFormErrors = Partial<Record<keyof IOrderInfo, string>>;
+
+export type TCategory = 'софт-скил'|'другое'|'дополнительное'|'кнопка'|'хард-скил';
+
+export type TCategoryMapping = {[Key in TCategory]:string};

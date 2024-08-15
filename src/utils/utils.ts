@@ -3,11 +3,19 @@ export function pascalToKebab(value: string): string {
 }
 
 export function isSelector(x: any): x is string {
-    return (typeof x === "string") && x.length > 1;
+    return typeof x === "string" && x.length > 1;
 }
 
 export function isEmpty(value: any): boolean {
     return value === null || value === undefined;
+}
+
+export function capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+export function formatNumber(x: number, sep = ' ') {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, sep);
 }
 
 export type SelectorCollection<T> = string | NodeListOf<Element> | T[];
@@ -132,4 +140,35 @@ export function createElement<
         }
     }
     return element;
+}
+
+type Callback<T> = (key: string, value: unknown) => void;
+
+/**
+ * Рекурсивно оборачивает объект в Proxy
+ * @param obj
+ * @param callback
+ */
+export function makeObservable<T extends object>(obj: T, callback: Callback<T>): T {
+    return new Proxy(obj, {
+        get(target: T & Record<string, unknown>, key: string): any {
+            const value = target[key];
+
+            if (value && typeof value === 'object') {
+                return makeObservable(value, (nestedKey, nestedValue) => {
+                    const fullPath = `${key}.${nestedKey}`;
+                    callback(fullPath, nestedValue);
+                });
+            }
+
+            return value;
+        },
+        set(target: T, key: string, value: unknown, receiver: T): boolean {
+            let success = Reflect.set(target, key, value, receiver);
+            if (success) {
+                callback(key, value);
+            }
+            return success;
+        },
+    });
 }

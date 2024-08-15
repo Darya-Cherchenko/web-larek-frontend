@@ -66,7 +66,7 @@ interface IOrder {
   address: string;
   email: string; 
   phone: string; 
-  items: IProduct[];
+  items: string[];
 }
 ```
 
@@ -156,6 +156,7 @@ export type TFormErrors = Partial<Record<keyof IOrderInfo, string>>;
 - basket: IProduct[] - массив товаров в корзине;
 - order: IOrder - заказ пользователя;
 - errorForm: TFormErrors - объект с ошибками форм;
+Методы:
 - addProduct(product: IProduct): void - добавление товаров в корзину;
 - deleteProduct(productId: string): void - удаление товаров из корзины;
 - clearBasket(): void - полная очистка корзины;
@@ -166,7 +167,7 @@ export type TFormErrors = Partial<Record<keyof IOrderInfo, string>>;
 - validateInfo(): boolean - валидация формы для модальных окон с данными пользователя;
 - validateOrder(): boolean - валидация формы для модального окна заказа;
 - clearOrder(): boolean - очистка формы заказа после покупки товаров;
-- setProducts(items: IProduct[]): void - забор данных с сервера;
+- setOrderField(field: keyof IOrderInfo, value: string): void - забор данных с сервера;
 - resetSelected(): void - обновление сосотояния товаров после совершения покупки.
 
 ### Слой представления
@@ -270,10 +271,14 @@ export type TFormErrors = Partial<Record<keyof IOrderInfo, string>>;
 
 *Событие, возникающее при взаимодействии пользователя с интерфейсом (генерируется классами, отвечающим за представление)*
 - `productAdd:submit` - событие, генерируемое при добавлении товара в корзину, изменение состояния товара и обновление счетчика на корзине; 
+- `basket:open` - открыть корзину с товарами;
 - `orderInfo:open` - открытие модального окна с информацией по заказу;
 - `product:delete` - выбор товара для удаления из корзины;
 - `orderDate:input` - изменение данных в форме с данными пользователя по заказу;
 - `orderDate:submit` - сохранение данных по заказу;
+- `order:submit` - отправка заказа;
 - `orderDate:validation` - событие, сообщающее о необходимости валидации формы заказа;
+- `contactsDate:validation` - событие, сообщающее о необходимости валидации формы с контактами;
 - `orderDate:previewClear` - необходима очистка данных выбранной для показа в модальном окне карточки товара;
+- `order:success` - заказ оформлен успешно;
 - `modal:close` - закрытие модального окна.
