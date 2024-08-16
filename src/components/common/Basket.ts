@@ -36,15 +36,15 @@ export class Basket extends Component<IBasketView> {
           textContent: 'Корзина пуста'
       }));
     }
-    this._button.disabled = items.length ? false : true;
+    this.setDisabled(this._button, items.length ? false : true)
   }
 
   set price(value: number) {
-      this._price.textContent = formatNumber(value) + ' синапсов';
+    this.setText(this._price, formatNumber(value) + ' синапсов');
   }
 
   disabledButton(){
-    this._button.disabled = true;
+    this.setDisabled(this._button, true);
   }
 
   refreshIndices() {
@@ -85,7 +85,7 @@ export class ProductItemBasket extends Component<IBasketProduct> {
   }
 
   set title(value: string) {
-    this._title.textContent = value;
+    this.setText(this._title, value);
   }
 
   set index(value: number) {
@@ -93,6 +93,6 @@ export class ProductItemBasket extends Component<IBasketProduct> {
   }
 
   set price(price: number) {
-    this._price.textContent = formatNumber(price) + ' синапсов';
+    this.setText(this._price, formatNumber(price) + ' синапсов');
   }
 }

@@ -197,12 +197,6 @@ events.on('order:success', (res: ApiListResponse<string>) => {
     });
 });
 
-// Закрытие модального окна
-events.on('modal:close', () => {
-    page.locked = false;
-    appData.clearOrder();
-});
-
 // Блокируем прокрутку страницы если открыта модалка
 events.on('modal:open', () => {
   page.locked = true;

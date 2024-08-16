@@ -51,7 +51,7 @@ export class Card extends Component<ICard> {
   }
 
   set title(value: string) {
-      this._title.textContent = value;
+      this.setText(this._title, value);
   }
 
   get title(): string {
@@ -59,24 +59,24 @@ export class Card extends Component<ICard> {
   }
 
   set image(value: string) {
-      this.setImage(this._image, value, this.title)
+      this.setImage(this._image, value, this.title);
   }
 
   set selected(value: boolean) {
     if (!this._button.disabled) {
-      this._button.disabled = value;
+      this.setDisabled(this._button, value)
     }
   }
 
   set price(value: number | null) {
-    this._price.textContent = value ? formatNumber(value) + ' синапсов' : 'Бесценно';
+    this.setText(this._price, value ? formatNumber(value) + ' синапсов' : 'Бесценно');
     if (this._button && !value) {
-        this._button.disabled = true;
+      this.setDisabled(this._button, true);
     }
   }
 
   set category(value: TCategory) {
-    this._category.textContent = value;
+    this.setText(this._category, value);
     this._category.classList.add(categoryMapping[value]);
   }
 }
@@ -96,6 +96,6 @@ export class ProductItemPreview extends Card {
   }
 
   set description(value: string) {
-      this._description.textContent = value;
+    this.setText(this._description, value);
   }
 }

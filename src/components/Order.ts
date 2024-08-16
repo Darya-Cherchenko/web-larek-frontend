@@ -1,6 +1,7 @@
 import { Form } from "./common/Form";
 import { IEvents } from "./base/events";
 import { IOrderInfo } from "../types";
+import { Component } from "./base/component";
 
 export class Order extends Form<IOrderInfo> {
   protected _card: HTMLButtonElement;
@@ -14,28 +15,36 @@ export class Order extends Form<IOrderInfo> {
 
     if (this._card) {
       this._card.addEventListener('click', () =>{
-        this._card.classList.add('button_alt-active');
-        this._cash.classList.remove('button_alt-active');
+        this.toggleCard(true);
+        this.toggleCash(false);
         this.onInputChange('payment', 'card');
       });
     }
 
     if (this._cash) {
       this._cash.addEventListener('click', () =>{
-        this._cash.classList.add('button_alt-active');
-        this._card.classList.remove('button_alt-active');
+        this.toggleCash(true);
+        this.toggleCard(false);
         this.onInputChange('payment', 'cash');
       });
     }
   }
 
+  toggleCard(state: boolean) {
+    this.toggleClass(this._card, 'button_alt-active', state);
+  }
+
+  toggleCash(state: boolean) {
+    this.toggleClass(this._cash, 'button_alt-active', state);
+  } 
+
   set address(value: string) {
     (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
   }
 
-  disableButtons() {
-    this._card.classList.remove('button_alt-active');
-    this._cash.classList.remove('button_alt-active');
+  disableButtons(state: boolean = false) {
+    this.toggleClass(this._card, 'button_alt-active', state);
+    this.toggleClass(this._cash, 'button_alt-active', state);
   }
 }
 
