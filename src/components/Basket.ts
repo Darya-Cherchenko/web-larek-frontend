@@ -1,7 +1,7 @@
-import { Component } from "../base/component";
-import { formatNumber, createElement } from "../../utils/utils";
-import { EventEmitter } from "../base/events";
-import { IProduct } from "../../types";
+import { Component } from "./base/component";
+import { formatNumber, createElement, ensureElement } from "../utils/utils";
+import { EventEmitter } from "./base/events";
+import { IProduct } from "../types";
 
 interface IBasketView {
   items: HTMLElement[];
@@ -16,9 +16,9 @@ export class Basket extends Component<IBasketView> {
   constructor(protected blockName: string, container: HTMLElement, protected events: EventEmitter) {
     super(container);
 
-    this._list = this.container.querySelector(`.${blockName}__list`);
-    this._price = this.container.querySelector(`.${blockName}__price`);
-    this._button = this.container.querySelector(`.${blockName}__button`);
+    this._list = ensureElement<HTMLElement>(`.${blockName}__list`, this.container);
+    this._price = ensureElement<HTMLElement>(`.${blockName}__price`, this.container);
+    this._button = ensureElement<HTMLButtonElement>(`.${blockName}__button`, this.container);
 
     if (this._button) {
       this._button.addEventListener('click', () => {
@@ -49,7 +49,7 @@ export class Basket extends Component<IBasketView> {
 
   refreshIndices() {
     Array.from(this._list.children).forEach((item, index) => 
-      (item.querySelector(`.basket__item-index`)!.textContent = (index + 1).toString()));
+      (this.setText(item.querySelector(`.basket__item-index`)!, (index + 1).toString())));
   }
 }
 
@@ -71,10 +71,10 @@ export class ProductItemBasket extends Component<IBasketProduct> {
   constructor(protected blockName: string, container: HTMLElement, protected action?: IProductItemBasketActions) {
     super(container);
 
-    this._index = this.container.querySelector(`.basket__item-index`);
-    this._title = this.container.querySelector(`.${blockName}__title`);
-    this._price = this.container.querySelector(`.${blockName}__price`);
-    this._button = this.container.querySelector(`.${blockName}__button`);
+    this._index = ensureElement<HTMLElement>(`.basket__item-index`, this.container);
+    this._title = ensureElement<HTMLElement>(`.${blockName}__title`, this.container);
+    this._price = ensureElement<HTMLElement>(`.${blockName}__price`, this.container);
+    this._button = ensureElement<HTMLButtonElement>(`.${blockName}__button`, this.container);
 
     if (this._button) {
       this._button.addEventListener('click', (evt) => {

@@ -29,9 +29,9 @@ export class Card extends Component<ICard> {
 
       this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
       this._image = ensureElement<HTMLImageElement>(`.${blockName}__image`, container);
-      this._price = container.querySelector(`.${blockName}__price`);
+      this._price = ensureElement<HTMLElement>(`.${blockName}__price`, container);
       this._button = container.querySelector(`.${blockName}__button`);
-      this._category = container.querySelector(`.${blockName}__category`);
+      this._category = ensureElement<HTMLElement>(`.${blockName}__category`, container);
 
       if (actions?.onClick) {
           if (this._button) {
@@ -55,7 +55,7 @@ export class Card extends Component<ICard> {
   }
 
   get title(): string {
-      return this._title.textContent || '';
+    return this._title.textContent || '';
   }
 
   set image(value: string) {
@@ -77,7 +77,7 @@ export class Card extends Component<ICard> {
 
   set category(value: TCategory) {
     this.setText(this._category, value);
-    this._category.classList.add(categoryMapping[value]);
+    this.toggleClass(this._category, categoryMapping[value], true);
   }
 }
 
@@ -92,7 +92,7 @@ export class ProductItemPreview extends Card {
 
   constructor(container: HTMLElement, actions?: ICardActions) {
       super('card', container, actions);
-      this._description = container.querySelector(`.${this.blockName}__text`);
+      this._description = ensureElement<HTMLElement>(`.${this.blockName}__text`, container);
   }
 
   set description(value: string) {

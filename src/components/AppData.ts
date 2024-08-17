@@ -65,6 +65,14 @@ export class AppState extends Model<IAppState> {
       this.events.emit('contacts:ready', this.order);
     }
   }
+
+  setContactsField(field: keyof IOrderInfo, value: string) {
+    this.order[field] = value;
+
+    if (this.validateInfo()) {
+      this.events.emit('contacts:ready', this.order);
+    }
+  }
   
   validateOrder() {
     const errors: typeof this.formErrors = {};

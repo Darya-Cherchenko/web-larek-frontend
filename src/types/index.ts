@@ -44,7 +44,8 @@ export interface IAppState {
   getTotalProducts(): number;
   getTotalPrice(): number;
   setIdItems(): void;
-  setOrderInfo(order: keyof IOrderInfo, value: string): void;
+  setOrderField(order: keyof IOrderInfo, value: string): void;
+  setContactsField(contacts: keyof IOrderInfo, value: string): void;
   validateInfo(): boolean;
   validateOrder(): boolean;
   clearOrder(): boolean;

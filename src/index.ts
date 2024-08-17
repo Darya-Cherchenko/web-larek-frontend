@@ -9,10 +9,10 @@ import { Page } from './components/Page';
 import { ProductItem, ProductItemPreview } from './components/Product';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Modal } from './components/common/Modal';
-import { Basket, ProductItemBasket } from './components/common/Basket';
+import { Basket, ProductItemBasket } from './components/Basket';
 import { IOrderInfo } from './types';
 import { Contacts, Order } from './components/Order';
-import { Success } from './components/common/Success';
+import { Success } from './components/Success';
 
 const events = new EventEmitter();
 const api = new StoreAPI(CDN_URL, API_URL);
@@ -167,9 +167,14 @@ events.on('contactsDate:validation', (errors: Partial<IOrderInfo>) => {
     contacts.errors = Object.values({phone, email}).filter(i => !!i).join('; ');
 });
 
-// Изменилось одно из полей
-events.on('orderDate:input', (data: { field: keyof IOrderInfo, value: string }) => {
+// Изменилось одно из полей (адрес и способ оплаты)
+events.on(/^order\..*:change/, (data: { field: keyof IOrderInfo, value: string }) => {
     appData.setOrderField(data.field, data.value);
+});
+
+// Изменилось одно из полей (контакты)
+events.on(/^contacts\..*:change/, (data: { field: keyof IOrderInfo, value: string }) => {
+  appData.setOrderField(data.field, data.value);
 });
 
 // Отправлена форма заказа
